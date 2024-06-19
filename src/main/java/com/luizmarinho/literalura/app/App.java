@@ -78,7 +78,7 @@ public class App {
         boolean doAgain = true;
         while(doAgain) {
             try {
-                if (!books.isEmpty()) {
+                if (books != null) {
                     if (books.size() > 1) {
                         for (int i = 0; i < books.size(); i++) {
                             System.out.println("[" + (i + 1) + "]" + " - " + books.get(i).getTitle() + "\n" + "------" +
@@ -173,11 +173,11 @@ public class App {
     }
 
     private void showRegisteredBooksByLanguage() {
-//        System.out.println("es\nen\nfr\npt\nDigite o idioma (Ex: pt): ");
-//        String choiceLanguage = reader.nextLine();
-//
-//        var registeredBooksByLanguage = bookRepository.findBookContainingLanguages(choiceLanguage);
-//        registeredBooksByLanguage.ifPresentOrElse(books -> books.forEach(System.out::println),
-//                () -> System.out.println("Não existem livros registrados nesse idioma"));
+        System.out.println("es\nen\nfr\npt\nDigite o idioma (Ex: pt): ");
+        String choiceLanguage = reader.nextLine();
+
+        var registeredBooksByLanguage = bookRepository.findContainingLanguages(choiceLanguage);
+        registeredBooksByLanguage.ifPresentOrElse(books -> books.forEach(System.out::println),
+                () -> System.out.println("Não existem livros registrados nesse idioma"));
     }
 }

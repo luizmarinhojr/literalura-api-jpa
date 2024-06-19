@@ -72,9 +72,11 @@ public class Author {
     @Override
     public String toString() {
 
-        return "Autor: " + name + "\n" +
+        return "----------------------- AUTOR -----------------------\n" +
+                "Autor: " + name + "\n" +
                 "Ano de nascimento: " + birthYear + "\n" +
                 "Ano de falecimento: " + deathYear + "\n" +
-                "Livros: " + books.stream().map(Book::showForAuthors).collect(Collectors.toSet()) + "\n";
+                "Livros: " + books.stream().map(Book::showForAuthors).collect(Collectors.toSet()) + "\n" +
+                "-----------------------------------------------------\n";
     }
 }

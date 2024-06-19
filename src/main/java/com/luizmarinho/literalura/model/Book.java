@@ -117,11 +117,13 @@ public class Book {
     @Override
     public String toString() {
         String hasCopyright = isCopyright() ? "Sim" : "Nao";
-        return "Titulo: " + title + '\'' + "\n" +
+        return "----------------------- LIVRO -----------------------\n" +
+                "Titulo: " + title + '\'' + "\n" +
                 "Autor(es): " + authors.stream().map(Author::getName).collect(Collectors.toSet()) + "\n" +
                 "Assuntos: " + subjects + "\n" +
                 "Idioma(s): " + languages + "\n" +
                 "Possui copyright: " + hasCopyright + "\n" +
-                "Quantidade de downloads: " + downloadCount + "\n";
+                "Quantidade de downloads: " + downloadCount + "\n" +
+                "-----------------------------------------------------\n";
     }
 }
