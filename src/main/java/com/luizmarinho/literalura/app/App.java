@@ -115,23 +115,18 @@ public class App {
 
             for (Author authorFromRam : book.getAuthors()) {
                 authorOptional = authorRepository.findByName(authorFromRam.getName());
-                System.out.println("********** Author na memoria **********\n" + authorFromRam.getName());
 
                 Author author;
                 if (authorOptional.isPresent()) {
                     var authorTemp = authorOptional.get();
-                    System.out.println("********** Author no BD **********\n" + authorTemp);
                     author = new Author(authorTemp.getName(), authorTemp.getBirthYear(),
                             authorTemp.getDeathYear(), authorTemp.getBooks());
                     bookNew.addNewAuthor(author);
-                    System.out.println("Saindo do if isPresent");
                 } else {
-                    System.out.println("***** Entrando no Else isPresent -> book *****\n");
                     author = new Author(authorFromRam.getName(), authorFromRam.getBirthYear(),
                             authorFromRam.getDeathYear(), authorFromRam.getBooks());
                     authorRepository.save(author);
                     bookNew.addNewAuthor(author);
-                    System.out.println("Saindo do else isPresent");
                 }
             }
             bookRepository.save(bookNew);
@@ -159,17 +154,22 @@ public class App {
         } else {
             System.out.println("\nNão há autores registrados");
         }
-
     }
 
     private void showRegisteredAuthorsByBirthYear() {
-//        try {
-//            System.out.println("\nDigite o ano: ");
-//            int choiceYear = Integer.parseInt(reader.nextLine());
-//            authorRepository.findAuthorAlive(choiceYear);
-//        } catch (NumberFormatException e) {
-//            System.out.println("\nDigite apenas números inteiros");
-//        }
+        try {
+            System.out.println("\nDigite o ano: ");
+            int choiceYear = Integer.parseInt(reader.nextLine());
+            var authors = authorRepository.findAuthorAlive(choiceYear);
+
+            if (!authors.isEmpty()) {
+                authors.forEach(System.out::println);
+            } else {
+                System.out.println("Não existiram autores vivos nesse ano");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("\nDigite apenas números inteiros");
+        }
     }
 
     private void showRegisteredBooksByLanguage() {
@@ -177,7 +177,11 @@ public class App {
         String choiceLanguage = reader.nextLine();
 
         var registeredBooksByLanguage = bookRepository.findContainingLanguages(choiceLanguage);
-        registeredBooksByLanguage.ifPresentOrElse(books -> books.forEach(System.out::println),
-                () -> System.out.println("Não existem livros registrados nesse idioma"));
+
+        if (!registeredBooksByLanguage.isEmpty()) {
+            registeredBooksByLanguage.forEach(System.out::println);
+        } else {
+            System.out.println("\nNão existem livros registrados nesse idioma");
+        }
     }
 }
