@@ -15,18 +15,19 @@ public class DataConversion {
         List<Book> books = new ArrayList<>();
         try {
             JsonNode response = mapper.readTree(json);
-//            System.out.println("********** COUNT *************\n" + response.path("count").asInt());
             if (response.path("count").asInt() > 0) {
                 JsonNode results = response.findPath("results");
                 for (JsonNode j : results) {
                     books.add(mapper.readValue(j.toString(), Book.class));
                 }
+                return books;
             } else {
-                System.out.println("**** Book not found ****");
+                System.out.println("**** Livro não encontrado ****");
+                return null;
             }
         } catch(JsonProcessingException e) {
             System.out.println("Error to convert from json");
+            return null;
         }
-        return books;
     }
 }

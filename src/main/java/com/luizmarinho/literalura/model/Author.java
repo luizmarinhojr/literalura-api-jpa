@@ -6,21 +6,19 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="authors")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Author {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
 
+    @Id
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> book = new HashSet<>();
+    @ManyToMany(mappedBy = "authors", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Set<Book> books = new HashSet<>();
 
     @Column(name = "birth_year", nullable = false)
     @JsonAlias("birth_year")
@@ -32,12 +30,11 @@ public class Author {
 
     public Author() {}
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public Author(String name, int birthYear, int deathYear, Set<Book> books) {
+        this.name = name;
+        this.birthYear = birthYear;
+        this.deathYear = deathYear;
+        this.books = books;
     }
 
     public String getName() {
@@ -48,12 +45,12 @@ public class Author {
         this.name = name;
     }
 
-    public Set<Book> getBook() {
-        return book;
+    public Set<Book> getBooks() {
+        return books;
     }
 
-    public void setBook(Set<Book> book) {
-        this.book = book;
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
     public int getBirthYear() {
@@ -74,6 +71,10 @@ public class Author {
 
     @Override
     public String toString() {
-        return name + " | " + "Ano de nascimento: " + birthYear + " | " + "Ano de falecimento: " + deathYear;
+
+        return "Autor: " + name + "\n" +
+                "Ano de nascimento: " + birthYear + "\n" +
+                "Ano de falecimento: " + deathYear + "\n" +
+                "Livros: " + books.stream().map(Book::showForAuthors).collect(Collectors.toSet()) + "\n";
     }
 }
