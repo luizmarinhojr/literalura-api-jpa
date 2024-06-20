@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorRepository extends JpaRepository<Author, String> {
-
     Optional<Author> findByName(String name);
 
     @Query(value = "SELECT * FROM authors WHERE :year BETWEEN birth_year AND death_year", nativeQuery = true)
